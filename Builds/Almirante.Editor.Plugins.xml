@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Almirante.Editor.Plugins</name>
+    </assembly>
+    <members>
+        <member name="T:Almirante.Editor.Plugins.Behavior.BehaviorEditorControl">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:Almirante.Editor.Plugins.Behavior.BehaviorEditorControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Almirante.Editor.Plugins.Behavior.BehaviorEditorControl"/> class.
+            </summary>
+        </member>
+        <member name="M:Almirante.Editor.Plugins.Behavior.BehaviorEditorControl.BehaviorEditorControl_Load(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Load event of the BehaviorEditorControl control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:Almirante.Editor.Plugins.Behavior.BehaviorEditorControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Almirante.Editor.Plugins.Behavior.BehaviorEditorControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Almirante.Editor.Plugins.Behavior.BehaviorEditorControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Almirante.Editor.Plugins.Behavior.BehaviorModule">
+            <summary>
+            Behavior editor module.
+            </summary>
+        </member>
+        <member name="F:Almirante.Editor.Plugins.Behavior.BehaviorModule.menu">
+            <summary>
+            The menu
+            </summary>
+        </member>
+        <member name="M:Almirante.Editor.Plugins.Behavior.BehaviorModule.Initialize">
+            <summary>
+            Initializes the specified services.
+            </summary>
+            <param name="services">The services.</param>
+        </member>
+        <member name="M:Almirante.Editor.Plugins.Behavior.BehaviorModule.Uninitialize">
+            <summary>
+            Uninitializes this instance.
+            </summary>
+        </member>
+        <member name="P:Almirante.Editor.Plugins.Behavior.BehaviorModule.Id">
+            <summary>
+            Gets the plugin id.
+            </summary>
+            <value>
+            The id.
+            </value>
+        </member>
+        <member name="P:Almirante.Editor.Plugins.Behavior.BehaviorModule.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:Almirante.Editor.Plugins.Behavior.BehaviorModule.Description">
+            <summary>
+            Gets the description.
+            </summary>
+            <value>
+            The description.
+            </value>
+        </member>
+        <member name="P:Almirante.Editor.Plugins.Behavior.BehaviorModule.Author">
+            <summary>
+            Gets the author.
+            </summary>
+            <value>
+            The author.
+            </value>
+        </member>
+        <member name="P:Almirante.Editor.Plugins.Behavior.BehaviorModule.Menu">
+            <summary>
+            Gets the menus.
+            </summary>
+            <value>
+            The menus.
+            </value>
+        </member>
+        <member name="T:Almirante.Editor.Plugins.Behavior.BehaviorMenu">
+            <summary>
+            Behavior menu.
+            </summary>
+        </member>
+        <member name="F:Almirante.Editor.Plugins.Behavior.BehaviorMenu.module">
+            <summary>
+            The module
+            </summary>
+        </member>
+        <member name="M:Almirante.Editor.Plugins.Behavior.BehaviorMenu.#ctor(Almirante.Editor.Plugins.Behavior.BehaviorModule)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Almirante.Editor.Plugins.Behavior.BehaviorMenu"/> class.
+            </summary>
+        </member>
+        <member name="M:Almirante.Editor.Plugins.Behavior.BehaviorMenu.Execute(System.String)">
+            <summary>
+            Executes this instance.
+            </summary>
+        </member>
+        <member name="P:Almirante.Editor.Plugins.Behavior.BehaviorMenu.Text">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:Almirante.Editor.Plugins.Behavior.BehaviorMenu.Children">
+            <summary>
+            Gets the children.
+            </summary>
+            <value>
+            The children.
+            </value>
+        </member>
+    </members>
+</doc>
