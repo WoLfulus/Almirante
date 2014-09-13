@@ -300,6 +300,7 @@ namespace Almirante.Engine.Scenes
             {
                 var scene = this.current.Peek();
                 scene.ClearTransitioning();
+                scene.Deactivate();
                 scene.Leave();
 
                 this.current.Pop();
@@ -338,6 +339,7 @@ namespace Almirante.Engine.Scenes
             {
                 var scene = this.current.Peek();
                 scene.ClearTransitioning();
+                scene.Deactivate();
 
                 if (this.nextScene != null)
                 {
@@ -373,7 +375,9 @@ namespace Almirante.Engine.Scenes
         {
             lock (this)
             {
-                this.current.Pop().ClearTransitioning();
+                this.current.Peek().Deactivate();
+                this.current.Peek().ClearTransitioning();
+                this.current.Pop();
                 this.current.Peek().ClearTransitioning();
 
                 if (this.transition != null)
