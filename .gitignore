@@ -37,3 +37,13 @@
 /Source/Almirante.Tests/Tests.Windows/bin
 /Source/Almirante.Tests/Tests.Windows/obj
 /Builds/*.*
+/Source/Almirante.Toolset/Almirante.Editor/bin
+/Source/Almirante.Toolset/Almirante.Editor/obj
+/Source/Almirante.Toolset/Almirante.Editor.Common/obj
+/Source/Almirante.Toolset/Almirante.Editor.Common/bin
+/Source/Almirante.Toolset/Almirante.Editor.Plugins/obj
+/Source/Almirante.Toolset/Almirante.Editor.Plugins/bin
+
+*.db
+*.suo
+*.suo
