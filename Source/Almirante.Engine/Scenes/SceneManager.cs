@@ -236,8 +236,8 @@ namespace Almirante.Engine.Scenes
                     this.nextScene = next;
 
                     var scene = this.current.Peek();
-                    scene.Deactivate();
                     scene.SetTransitioning();
+                    scene.Deactivate();
 
                     if (type != TransitionType.Pop)
                     {
@@ -298,11 +298,10 @@ namespace Almirante.Engine.Scenes
         {
             lock (this)
             {
-                var scene = this.current.Peek();
-                scene.ClearTransitioning();
-                scene.Deactivate();
-                scene.Leave();
-
+                this.current.Peek();
+                this.current.Peek().ClearTransitioning();
+                this.current.Peek().Deactivate();
+                this.current.Peek().Leave();
                 this.current.Pop();
 
                 if (this.nextScene != null)
@@ -315,6 +314,7 @@ namespace Almirante.Engine.Scenes
                     }
 
                     this.current.Push(this.nextScene);
+                    this.nextScene.Enter();
                     this.nextScene.Activate();
                     this.nextScene = null;
                 }
@@ -337,9 +337,9 @@ namespace Almirante.Engine.Scenes
         {
             lock (this)
             {
-                var scene = this.current.Peek();
-                scene.ClearTransitioning();
-                scene.Deactivate();
+                this.current.Peek();
+                this.current.Peek().ClearTransitioning();
+                this.current.Peek().Deactivate();
 
                 if (this.nextScene != null)
                 {
@@ -351,6 +351,7 @@ namespace Almirante.Engine.Scenes
                     }
 
                     this.current.Push(this.nextScene);
+                    this.nextScene.Enter();
                     this.nextScene.Activate();
                     this.nextScene = null;
                 }
@@ -377,7 +378,10 @@ namespace Almirante.Engine.Scenes
             {
                 this.current.Peek().Deactivate();
                 this.current.Peek().ClearTransitioning();
+                this.current.Peek().Leave();
                 this.current.Pop();
+
+                this.current.Peek();
                 this.current.Peek().ClearTransitioning();
 
                 if (this.transition != null)
