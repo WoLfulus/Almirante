@@ -8,11 +8,11 @@ using System;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Almirante.Engine")]
-[assembly: AssemblyProduct("Almirante.Engine")]
-[assembly: AssemblyDescription("Almirante Engine")]
-[assembly: AssemblyCompany("Almirante Games")]
-[assembly: AssemblyCopyright("Copyright © Almirante Games 2013")]
+[assembly: AssemblyTitle("Almirante Engine")]
+[assembly: AssemblyProduct("Almirante Engine Library")]
+[assembly: AssemblyDescription("Almirante 2D Game Engine")]
+[assembly: AssemblyCompany("WoLfulus.com")]
+[assembly: AssemblyCopyright("Copyright © WoLfulus.com 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

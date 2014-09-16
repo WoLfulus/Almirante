@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Almirante.Entities")]
-[assembly: AssemblyProduct("Almirante.Entities")]
-[assembly: AssemblyDescription("Almirante Engine - Entities")]
-[assembly: AssemblyCompany("Almirante Games")]
-[assembly: AssemblyCopyright("Copyright © Almirante Games 2013")]
+[assembly: AssemblyTitle("Entities Management")]
+[assembly: AssemblyProduct("Entity Management Library")]
+[assembly: AssemblyDescription("Almirante Engine - Entity Management Library")]
+[assembly: AssemblyCompany("WoLfulus.com")]
+[assembly: AssemblyCopyright("Copyright © WoLfulus.com 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

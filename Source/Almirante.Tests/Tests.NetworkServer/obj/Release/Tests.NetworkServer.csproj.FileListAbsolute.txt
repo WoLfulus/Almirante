@@ -1,0 +1,5 @@
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\Release\Tests.NetworkServer.exe
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\Release\Tests.NetworkServer.pdb
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\obj\Release\Tests.NetworkServer.csprojResolveAssemblyReference.cache
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\obj\Release\Tests.NetworkServer.exe
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\obj\Release\Tests.NetworkServer.pdb
