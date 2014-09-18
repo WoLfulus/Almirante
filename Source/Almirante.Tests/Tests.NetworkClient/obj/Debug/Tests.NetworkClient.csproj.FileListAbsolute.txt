@@ -1,0 +1,4 @@
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Debug\Tests.NetworkClient.csprojResolveAssemblyReference.cache
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Debug\Tests.NetworkClient.Forms.Login.resources
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Debug\Tests.NetworkClient.Properties.Resources.resources
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Debug\Tests.NetworkClient.csproj.GenerateResource.Cache

@@ -1,0 +1,10 @@
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\obj\x86\Debug\Tests.NetworkServer.csprojResolveAssemblyReference.cache
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\x86\Debug\Tests.NetworkServer.exe.config
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\x86\Debug\Tests.NetworkServer.exe
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\x86\Debug\Tests.NetworkServer.pdb
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\x86\Debug\Almirante.Network.dll
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\x86\Debug\Tests.NetworkProtocol.dll
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\x86\Debug\Almirante.Network.pdb
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\bin\x86\Debug\Tests.NetworkProtocol.pdb
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\obj\x86\Debug\Tests.NetworkServer.exe
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkServer\obj\x86\Debug\Tests.NetworkServer.pdb

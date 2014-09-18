@@ -1,0 +1,7 @@
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkProtocol\bin\x86\Debug\Tests.NetworkProtocol.dll
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkProtocol\bin\x86\Debug\Tests.NetworkProtocol.pdb
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkProtocol\bin\x86\Debug\Almirante.Network.dll
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkProtocol\bin\x86\Debug\Almirante.Network.pdb
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkProtocol\obj\x86\Debug\Tests.NetworkProtocol.csprojResolveAssemblyReference.cache
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkProtocol\obj\x86\Debug\Tests.NetworkProtocol.dll
+C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkProtocol\obj\x86\Debug\Tests.NetworkProtocol.pdb
