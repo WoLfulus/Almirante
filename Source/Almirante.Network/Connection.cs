@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -48,8 +49,8 @@ namespace Almirante.Network
         /// <summary>
         /// Events
         /// </summary>
+        internal event EventHandler<MessageEventArgs> Message;
         internal event EventHandler<DisconnectedEventArgs> Disconnected;
-        internal event EventHandler<ErrorEventArgs> Error;
 
         /// <summary>
         /// Constructor
@@ -76,23 +77,64 @@ namespace Almirante.Network
         /// </summary>
         public void Disconnect()
         {
-            if (this.socket != null)
+            lock (this)
             {
-                try
+                if (this.socket != null)
                 {
-                    this.socket.Shutdown(SocketShutdown.Both);
-                    this.socket.Close(100);
-                    this.socket = null;
-                }
-                catch (Exception)
-                {
-                }
+                    try
+                    {
+                        this.socket.Shutdown(SocketShutdown.Both);
+                        this.socket.Close(100);
+                        this.socket = null;
+                    }
+                    catch (Exception)
+                    {
+                    }
 
-                this.OnDisconnect();
-                if (this.Disconnected != null)
-                {
-                    this.Disconnected(this, new DisconnectedEventArgs());
+                    this.OnDisconnect();
+                    if (this.Disconnected != null)
+                    {
+                        this.Disconnected(this, new DisconnectedEventArgs());
+                    }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sends a packet to this connection.
+        /// </summary>
+        /// <param name="packet">Packet instance.</param>
+        public void Send(Packet packet)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (BinaryWriter writer = new BinaryWriter(stream, Encoding.UTF8))
+                {
+                    byte[] buffer = packet.Write();
+                    writer.Write(buffer.Length + 8);
+                    writer.Write(packet.Id);
+                    writer.Write(buffer);
+                    writer.Flush();
+                    byte[] data = stream.ToArray();
+                    lock (this)
+                    {
+                        this.socket.BeginSend(data, 0, data.Length, SocketFlags.None, this.SendCallback, data);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Callback.
+        /// </summary>
+        /// <param name="result"></param>
+        private void SendCallback(IAsyncResult result)
+        {
+            byte[] buffer = result.AsyncState as byte[];
+            int bytes = this.socket.EndSend(result);
+            if (bytes != buffer.Length)
+            {
+                Debug.WriteLine("Send callback size differs from buffer length (" + bytes + " != " + buffer.Length + ")");
             }
         }
 
@@ -116,7 +158,7 @@ namespace Almirante.Network
                 int bytes = this.socket.EndReceive(result, out error);
                 if (error != SocketError.Success)
                 {
-                    Console.WriteLine("RECEIVE ERROR: " + error.ToString());
+                    this.OnError(new Exception("EndReceive failed with error " + error.ToString()));
                     this.Disconnect();
                 }
                 else
@@ -124,19 +166,52 @@ namespace Almirante.Network
                     if (bytes > 0)
                     {
                         this.bufferOffset += bytes;
-                        if (this.bufferOffset <= 8)
+                        while (true)
                         {
-                            this.Receive();
-                            return;
+                            if (this.bufferOffset < 8)
+                            {
+                                this.Receive();
+                                return;
+                            }
+
+                            using (MemoryStream stream = new MemoryStream(this.buffer, 0, this.bufferOffset, false))
+                            {
+                                using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8))
+                                {
+                                    int size = reader.ReadInt32();
+                                    int id = reader.ReadInt32();
+
+                                    if (size >= this.buffer.Length)
+                                    {
+                                        throw new Exception("Packet size is bigger than the receive buffer.");
+                                    }
+
+                                    if (size < this.bufferOffset)
+                                    {
+                                        this.Receive();
+                                        return;
+                                    }
+
+                                    byte[] buffer = reader.ReadBytes(size - 8);
+                                    if (this.Message != null)
+                                    {
+                                        this.Message(this, new MessageEventArgs()
+                                        {
+                                            Id = id,
+                                            Buffer = buffer
+                                        });
+                                    }
+
+                                    // Messages copy to front
+                                    for (int i = 0; i < this.bufferOffset - size; i++)
+                                    {
+                                        this.buffer[i] = this.buffer[size + i];
+                                    }
+
+                                    this.bufferOffset -= size;
+                                }
+                            }
                         }
-
-                        MemoryStream stream = new MemoryStream(this.buffer, 0, this.bufferOffset, false);
-                        BinaryReader reader = new BinaryReader(stream, Encoding.UTF8);
-                        
-                        int size = reader.ReadInt32();
-                        int id = reader.ReadInt32();
-
-                        byte[] message = reader.ReadBytes(size - 8);
                     }
                     else
                     {
@@ -149,13 +224,7 @@ namespace Almirante.Network
             }
             catch (Exception e)
             {
-                if (this.Error != null)
-                {
-                    this.Error(this, new ErrorEventArgs()
-                    {
-                        Error = e
-                    });
-                }
+                this.OnError(e);
                 this.Disconnect();
             }
         }
@@ -171,6 +240,13 @@ namespace Almirante.Network
         /// Connected.
         /// </summary>
         protected virtual void OnDisconnect()
+        {
+        }
+
+        /// <summary>
+        /// Connected.
+        /// </summary>
+        protected virtual void OnError(Exception error)
         {
         }
     }

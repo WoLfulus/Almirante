@@ -10,23 +10,13 @@ namespace Tests.NetworkProtocol
     /// Join packet.
     /// </summary>
     [Packet(Packets.Join)]
-    public class Join : Packet
+    public class PacketJoin : Packet
     {
         /// <summary>
         /// Name field.
         /// </summary>
         [Field(1)]
         public string Name
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Test field
-        /// </summary>
-        [Field(2)]
-        public uint Test
         {
             get;
             set;

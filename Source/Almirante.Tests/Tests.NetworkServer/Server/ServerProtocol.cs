@@ -10,15 +10,15 @@ namespace Tests.NetworkServer.Server
     /// <summary>
     /// Server protocol.
     /// </summary>
-    public class ServerProtocol : Protocol<Player>
+    public class ServerProtocol : Protocol<Client>
     {
         /// <summary>
         /// Constructor
         /// </summary>
         public ServerProtocol()
         {
-            this.Register<Chat>(this.OnChat);
-            this.Register<Join>(this.OnJoin);
+            this.Register<PacketChat>(this.OnChat);
+            this.Register<PacketJoin>(this.OnJoin);
         }
 
         /// <summary>
@@ -26,9 +26,10 @@ namespace Tests.NetworkServer.Server
         /// </summary>
         /// <param name="player"></param>
         /// <param name="packet"></param>
-        protected void OnJoin(Player player, Join packet)
+        protected void OnJoin(Client client, PacketJoin packet)
         {
-
+            Console.WriteLine("Client #" + client.Id + " set it's name to '" + packet.Name + "'");
+            client.Name = packet.Name;
         }
 
         /// <summary>
@@ -36,9 +37,19 @@ namespace Tests.NetworkServer.Server
         /// </summary>
         /// <param name="player"></param>
         /// <param name="packet"></param>
-        protected void OnChat(Player player, Chat packet)
+        protected void OnChat(Client client, PacketChat packet)
         {
-
+            if (client.Name != null)
+            {
+                foreach (var conn in this.Server.Connections)
+                {
+                    conn.Send(new PacketChat() 
+                    {
+                        Message = "[" + client.Name + "] " + packet.Message
+                    });
+                }
+                Console.WriteLine("[" + client.Name + "] " + packet.Message);
+            }
         }
     }
 }

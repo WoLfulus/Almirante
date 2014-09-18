@@ -7,7 +7,7 @@ using System.Text;
 namespace Tests.NetworkProtocol
 {
     [Packet(Packets.Chat)]
-    public class Chat : Packet
+    public class PacketChat : Packet
     {
         /// <summary>
         /// Chat message.

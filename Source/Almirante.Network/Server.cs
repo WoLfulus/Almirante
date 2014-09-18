@@ -41,6 +41,20 @@ namespace Almirante.Network
         private Dictionary<int, T> connections;
 
         /// <summary>
+        /// List of connections
+        /// </summary>
+        public T[] Connections
+        {
+            get
+            {
+                lock (this)
+                {
+                    return this.connections.Values.ToArray();
+                }
+            }
+        }
+
+        /// <summary>
         /// Events
         /// </summary>
         public event EventHandler Started;
@@ -55,6 +69,7 @@ namespace Almirante.Network
         public Server(Protocol<T> protocol, int capacity)
         {
             this.protocol = protocol;
+            this.protocol.Server = this;
             this.capacity = capacity;
             this.connections = new Dictionary<int, T>(capacity);
             this.ids = new Queue<int>(capacity);
@@ -134,6 +149,7 @@ namespace Almirante.Network
                         
                         var conn = new T();
                         conn.Disconnected += OnDisconnect;
+                        conn.Message += OnMessage;
                         conn.Initialize(id, socket);
 
                         this.connections[id] = conn;
@@ -151,6 +167,23 @@ namespace Almirante.Network
             catch (Exception e)
             {
                 Console.WriteLine("[ERROR] " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Connection lost.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnMessage(object sender, MessageEventArgs e)
+        {
+            var conn = sender as T;
+            if (conn != null)
+            {
+                lock (this)
+                {
+                    this.protocol.Handle(conn, e.Id, e.Buffer);
+                }
             }
         }
 

@@ -37,5 +37,14 @@ namespace Almirante.Network
             get;
             internal set;
         }
+
+        /// <summary>
+        /// Reader
+        /// </summary>
+        public Func<Packet> Constructor
+        {
+            get;
+            internal set;
+        }
     }
 }

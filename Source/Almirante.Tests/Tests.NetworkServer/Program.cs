@@ -17,7 +17,7 @@ namespace Tests.NetworkServer
             ServerProtocol protocol = new ServerProtocol();
 
             // Creates the server
-            Server<Player> server = new Server<Player>(protocol, 100);
+            Server<Client> server = new Server<Client>(protocol, 100);
 
             // Register start event
             server.Started += (e, a) =>

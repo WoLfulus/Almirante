@@ -6,19 +6,33 @@ using System.Text;
 
 namespace Almirante.Network
 {
+    /// <summary>
+    /// Protocol manager.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Protocol<T>
+        where T : Connection, new()
     {
         /// <summary>
         /// Packet handlers.
         /// </summary>
-        private Dictionary<int, Action<T, object>> handlers;
+        private Dictionary<int, Action<T, byte[]>> handlers;
+
+        /// <summary>
+        /// Server client.
+        /// </summary>
+        public Server<T> Server
+        {
+            get;
+            internal set;
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
         public Protocol()
         {
-            this.handlers = new Dictionary<int, Action<T, object>>();
+            this.handlers = new Dictionary<int, Action<T, byte[]>>();
         }
 
         /// <summary>
@@ -27,17 +41,38 @@ namespace Almirante.Network
         /// <param name="id"></param>
         /// <param name="type"></param>
         public void Register<P>(Action<T, P> callback)
-            where P : new()
+            where P : Packet, new()
         {
             var info = PacketManager.GetInformation(typeof(P));
             if (this.handlers.ContainsKey(info.Id))
             {
                 throw new Exception("Packet handler already registered.");
             }
-            this.handlers.Add(info.Id, new Action<T, object>((p, o) =>
+            this.handlers.Add(info.Id, new Action<T, byte[]>((p, data) =>
             {
-                callback(p, (P) o);
+                P packet = info.Constructor() as P;
+                if (packet != null)
+                {
+                    packet.Read(data);
+                }
+                callback(p, packet);
             }));
+        }
+
+        /// <summary>
+        /// Packet handler.
+        /// </summary>
+        internal void Handle(T connection, int id, byte[] payload)
+        {
+            Action<T, byte[]> handler = null;
+            if (this.handlers.TryGetValue(id, out handler))
+            {
+                handler(connection, payload);
+            }
+            else
+            {
+                throw new Exception("Packet handler not found for packet id #" + id);
+            }
         }
     }
 }

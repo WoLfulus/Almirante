@@ -27,7 +27,7 @@ namespace Almirante.Network
         /// <summary>
         /// Component types holder.
         /// </summary>
-        private static Dictionary<Type, PacketInfo> packets = new Dictionary<Type, PacketInfo>();
+        private static Dictionary<Type, PacketInfo> infos = new Dictionary<Type, PacketInfo>();
 
         /// <summary>
         /// Gets the current count of registered types.
@@ -62,7 +62,7 @@ namespace Almirante.Network
             lock (PacketManager.locker)
             {
                 PacketInfo info = null;
-                if (PacketManager.packets.TryGetValue(type, out info))
+                if (PacketManager.infos.TryGetValue(type, out info))
                 {
                     return info;
                 }
@@ -79,7 +79,7 @@ namespace Almirante.Network
                 }
 
                 var packet = attributes[0] as PacketAttribute;
-                var count = (from v in PacketManager.packets.Values
+                var count = (from v in PacketManager.infos.Values
                              where v.Id == packet.Id 
                              select v).Count();
                 if (count > 0)
@@ -106,6 +106,17 @@ namespace Almirante.Network
                     }
                 }
 
+                ///
+                /// Constructor
+                ///
+                {
+                    var construct = Expression.New(type);
+                    info.Constructor = Expression.Lambda<Func<Packet>>(construct).Compile();
+                }
+
+                ///
+                /// Writer
+                ///
                 {
                     var s = Expression.Parameter(typeof(BinaryWriter), "s");
                     var p = Expression.Parameter(typeof(Packet), "p");
@@ -126,6 +137,9 @@ namespace Almirante.Network
                     info.Writer = Expression.Lambda<Action<BinaryWriter, Packet>>(b, s, p).Compile();
                 }
 
+                ///
+                /// Reader
+                ///
                 {
                     var s = Expression.Parameter(typeof(BinaryReader), "s");
                     var p = Expression.Parameter(typeof(Packet), "p");
@@ -211,7 +225,7 @@ namespace Almirante.Network
                     info.Reader = Expression.Lambda<Action<BinaryReader, Packet>>(b, s, p).Compile();
                 }
                 
-                PacketManager.packets.Add(type, info);
+                PacketManager.infos.Add(type, info);
                 return info;
             }
         }

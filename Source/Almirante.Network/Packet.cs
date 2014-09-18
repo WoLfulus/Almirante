@@ -48,7 +48,7 @@ namespace Almirante.Network
         {
             using (MemoryStream stream = new MemoryStream(buffer))
             {
-                using (BinaryReader reader = new BinaryReader(stream))
+                using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8))
                 {
                     PacketInfo info = PacketManager.GetInformation(this.GetType());
                     info.Reader(reader, this);

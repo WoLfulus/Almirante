@@ -23,4 +23,28 @@ namespace Almirante.Network
     public class DisconnectedEventArgs : EventArgs
     {
     }
+
+    /// <summary>
+    /// Packet event.
+    /// </summary>
+    public class MessageEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Packet id.
+        /// </summary>
+        public int Id
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Packet buffer content.
+        /// </summary>
+        public byte[] Buffer
+        {
+            get;
+            internal set;
+        }
+    }
 }
