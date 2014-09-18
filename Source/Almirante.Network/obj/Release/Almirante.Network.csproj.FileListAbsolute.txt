@@ -1,6 +1,0 @@
-C:\Users\João Francisco\Documents\GitHub\Almirante\Builds\Almirante.Network.xml
-C:\Users\João Francisco\Documents\GitHub\Almirante\Builds\Almirante.Network.dll
-C:\Users\João Francisco\Documents\GitHub\Almirante\Builds\Almirante.Network.pdb
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Network\obj\Release\Almirante.Network.csprojResolveAssemblyReference.cache
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Network\obj\Release\Almirante.Network.dll
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Network\obj\Release\Almirante.Network.pdb

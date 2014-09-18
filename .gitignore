@@ -49,3 +49,11 @@
 *.suo
 *.suo
 *.cache
+/Source/Almirante.Network/bin
+/Source/Almirante.Network/obj
+/Source/Almirante.Tests/Tests.NetworkClient/bin
+/Source/Almirante.Tests/Tests.NetworkClient/obj
+/Source/Almirante.Tests/Tests.NetworkProtocol/obj
+/Source/Almirante.Tests/Tests.NetworkProtocol/bin
+/Source/Almirante.Tests/Tests.NetworkServer/obj
+/Source/Almirante.Tests/Tests.NetworkServer/bin

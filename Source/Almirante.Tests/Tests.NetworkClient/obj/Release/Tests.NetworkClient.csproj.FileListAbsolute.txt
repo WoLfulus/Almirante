@@ -1,8 +1,0 @@
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Release\Tests.NetworkClient.csprojResolveAssemblyReference.cache
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Release\Tests.NetworkClient.Forms.Login.resources
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Release\Tests.NetworkClient.Properties.Resources.resources
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Release\Tests.NetworkClient.csproj.GenerateResource.Cache
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\bin\Release\Tests.NetworkClient.exe
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\bin\Release\Tests.NetworkClient.pdb
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Release\Tests.NetworkClient.exe
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkClient\obj\Release\Tests.NetworkClient.pdb

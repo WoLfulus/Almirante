@@ -1,1 +1,0 @@
-C:\Users\João Francisco\Documents\GitHub\Almirante\Source\Almirante.Tests\Tests.NetworkProtocol\obj\Debug\Tests.NetworkProtocol.csprojResolveAssemblyReference.cache
