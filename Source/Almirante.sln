@@ -66,7 +66,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.NetworkProtocol", "Al
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.NetworkClient", "Almirante.Tests\Tests.NetworkClient\Tests.NetworkClient\Tests.NetworkClient.csproj", "{658FB62B-D75D-4B04-BEA7-7373544628AB}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "Tests.NetworkClientContent", "Almirante.Tests\Tests.NetworkClient\Tests.NetworkClientContent\Tests.NetworkClientContent.contentproj", "{DA36E430-E509-4EAA-B7C7-01BA6DC94CE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.NetworkClientContent", "Almirante.Tests\Tests.NetworkClient\Tests.NetworkClientContent\Tests.NetworkClientContent.contentproj", "{DA36E430-E509-4EAA-B7C7-01BA6DC94CE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,7 +152,6 @@ Global
 		{658FB62B-D75D-4B04-BEA7-7373544628AB}.Debug|x86.ActiveCfg = Debug|x86
 		{658FB62B-D75D-4B04-BEA7-7373544628AB}.Debug|x86.Build.0 = Debug|x86
 		{658FB62B-D75D-4B04-BEA7-7373544628AB}.Release|x86.ActiveCfg = Release|x86
-		{658FB62B-D75D-4B04-BEA7-7373544628AB}.Release|x86.Build.0 = Release|x86
 		{DA36E430-E509-4EAA-B7C7-01BA6DC94CE8}.Debug|x86.ActiveCfg = Debug|x86
 		{DA36E430-E509-4EAA-B7C7-01BA6DC94CE8}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
