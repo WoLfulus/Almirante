@@ -6,12 +6,82 @@ using System.Text;
 
 namespace Almirante.Network
 {
+
+    /// <summary>
+    /// Protocol manager.
+    /// </summary>
+    public class NetClientProtocol
+    {
+        /// <summary>
+        /// Packet handlers.
+        /// </summary>
+        private Dictionary<int, List<Action<byte[]>>> handlers;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public NetClientProtocol()
+        {
+            this.handlers = new Dictionary<int, List<Action<byte[]>>>();
+        }
+
+        /// <summary>
+        /// Registers a packet type.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        public void Subscribe<P>(Action<P> callback)
+            where P : Packet, new()
+        {
+            var info = PacketManager.GetInformation(typeof(P));
+
+            List<Action<byte[]>> handlers = null;
+            if (this.handlers.TryGetValue(info.Id, out handlers))
+            {
+                
+            }
+            else
+            {
+                var list = new List<Action<byte[]>>();
+                list.Add(new Action<byte[]>((data) =>
+                {
+                    P packet = info.Constructor() as P;
+                    if (packet != null)
+                    {
+                        packet.Read(data);
+                    }
+                    callback(packet);
+                }));
+                this.handlers.Add(info.Id, list);
+            }
+        }
+
+        /// <summary>
+        /// Packet handler.
+        /// </summary>
+        internal void Handle(int id, byte[] payload)
+        {
+            List<Action<byte[]>> handlers = null;
+            if (this.handlers.TryGetValue(id, out handlers))
+            {
+                foreach (var handler in handlers)
+                {
+                    handler(payload);
+                }
+            }
+            else
+            {
+                throw new Exception("Packet handlers not found for packet id #" + id);
+            }
+        }
+    }
+
     /// <summary>
     /// Protocol manager.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Protocol<T>
-        where T : Connection, new()
+    public class NetServerProtocol<T>
+        where T : NetConnection, new()
     {
         /// <summary>
         /// Packet handlers.
@@ -21,7 +91,7 @@ namespace Almirante.Network
         /// <summary>
         /// Server client.
         /// </summary>
-        public Server<T> Server
+        public NetServer<T> Server
         {
             get;
             internal set;
@@ -30,7 +100,7 @@ namespace Almirante.Network
         /// <summary>
         /// Constructor
         /// </summary>
-        public Protocol()
+        public NetServerProtocol()
         {
             this.handlers = new Dictionary<int, Action<T, byte[]>>();
         }

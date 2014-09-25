@@ -57,8 +57,8 @@ namespace Tests.Fonts.Screens
                 font.Color = Color.OrangeRed;
                 batch.DrawFont(font, new Vector2(0, font.FontHeight * 3 + 10), "The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog");
                 font.Color = Color.White;
-                batch.DrawFont(font, new Vector2(300, font.FontHeight * 3 + 10), BitmapFontAlignment.Right, "The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog");
-                batch.DrawFont(font, new Vector2(600, font.FontHeight * 3 + 10), BitmapFontAlignment.Center, "The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog");
+                batch.DrawFont(font, new Vector2(300, font.FontHeight * 3 + 10), FontAlignment.Right, "The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog");
+                batch.DrawFont(font, new Vector2(600, font.FontHeight * 3 + 10), FontAlignment.Center, "The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog");
                 batch.End();
             }
         }

@@ -118,12 +118,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core\Windows\AlmiranteGraphicsService.cs" />
-    <Compile Include="Extensions\BatchBitmapFont.cs" />
+    <Compile Include="Extensions\BatchFont.cs" />
     <Compile Include="Extensions\BatchPrimitives.cs" />
     <Compile Include="Extensions\EventArgsExtensions.cs" />
+    <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\TextureExtensions.cs" />
     <Compile Include="Fonts\BitmapFont.cs" />
-    <Compile Include="Fonts\BitmapFontAlignment.cs" />
+    <Compile Include="Fonts\FontAlignment.cs" />
     <Compile Include="Interface\Control.cs" />
     <Compile Include="Interface\ControlCollection.cs" />
     <Compile Include="Interface\ControlEventArgs.cs" />
@@ -199,7 +200,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.None" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_BuildVersioningStyle="None.None.None.None" />
     </VisualStudio>
   </ProjectExtensions>
   <!--

@@ -27,7 +27,7 @@ namespace Almirante.Network
     /// <summary>
     /// Packet event.
     /// </summary>
-    public class MessageEventArgs : EventArgs
+    public class DataEventArgs : EventArgs
     {
         /// <summary>
         /// Packet id.

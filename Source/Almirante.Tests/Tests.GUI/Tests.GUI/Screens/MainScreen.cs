@@ -171,7 +171,7 @@ namespace Tests.Gui.Screens
 
             batch.Start();
             batch.Draw(resources.DefaultBackground, new Vector2(0, 0), Color.White);
-            batch.DrawFont(resources.DefaultFont, new Vector2(50, 50), BitmapFontAlignment.Left, Color.DarkMagenta, string.Format("Mouse: {0}, {1}", input.Mouse.Position.X, input.Mouse.Position.Y));
+            batch.DrawFont(resources.DefaultFont, new Vector2(50, 50), FontAlignment.Left, Color.DarkMagenta, string.Format("Mouse: {0}, {1}", input.Mouse.Position.X, input.Mouse.Position.Y));
             batch.End();
         }
     }

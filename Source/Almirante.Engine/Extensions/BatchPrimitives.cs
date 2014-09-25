@@ -53,6 +53,11 @@ namespace Microsoft.Xna.Framework.Graphics
         /// </summary>
         private static Texture2D m_pixel;
 
+        /// <summary>
+        /// State
+        /// </summary>
+        private static RasterizerState state;
+
         #endregion Private Members
 
         #region Vector Calculation Methods

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Tests.NetworkProtocol;
-using Tests.NetworkServer.Server;
+using Tests.NetworkServer.Network;
 
 namespace Tests.NetworkServer
 {
@@ -13,29 +13,8 @@ namespace Tests.NetworkServer
     {
         static void Main(string[] args)
         {
-            // Creates an instance of protocol handler
-            ServerProtocol protocol = new ServerProtocol();
-
             // Creates the server
-            Server<Client> server = new Server<Client>(protocol, 100);
-
-            // Register start event
-            server.Started += (e, a) =>
-            {
-                Console.WriteLine("Server started.");
-            };
-
-            // Register stop event
-            server.Stopped += (e, a) =>
-            {
-                Console.WriteLine("Server stopped.");
-            };
-
-            // Register error event
-            server.Error += (e, a) =>
-            {
-                Console.WriteLine("Server error: " + a.Error.Message);
-            };
+            Server server = new Server();
 
             // Starts the server
             server.Start(8000);

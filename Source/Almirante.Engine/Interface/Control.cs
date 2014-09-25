@@ -786,11 +786,14 @@ namespace Almirante.Engine.Interface
         /// <param name="position">The position.</param>
         internal virtual void Draw(SpriteBatch batch, Vector2 position)
         {
-            this.OnDraw(batch, position);
-
-            foreach (var control in this.Controls)
+            if (this.Visible)
             {
-                control.Draw(batch, position + control.position);
+                this.OnDraw(batch, position);
+
+                foreach (var control in this.Controls)
+                {
+                    control.Draw(batch, position + control.position);
+                }
             }
         }
 

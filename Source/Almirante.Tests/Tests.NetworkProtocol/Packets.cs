@@ -10,7 +10,10 @@ namespace Tests.NetworkProtocol
     /// </summary>
     public static class Packets
     {
-        public const int Join = 1;
-        public const int Chat = 2;
+        public const int JoinRequest = 1;
+        public const int JoinResponse = 2;
+        public const int ServerMessage = 3;
+        public const int MessageRequest = 4;
+        public const int MessageResponse = 5;
     }
 }

@@ -95,10 +95,10 @@ namespace Tests.Inputs.Screens
             batch.End();
 
             batch.Start();
-            batch.DrawFont(resources.DefaultFont, new Vector2(25, 25), BitmapFontAlignment.Left, Color.White, this.strings.ToString());
-            batch.DrawFont(resources.DefaultFont, new Vector2(250, 25), BitmapFontAlignment.Left, Color.White, string.Format("Mouse wheel: {0}", input.Mouse.ScrollValue));
-            batch.DrawFont(resources.DefaultFont, new Vector2(250, 50), BitmapFontAlignment.Left, Color.White, string.Format("Mouse position: {0}", input.Mouse.Position));
-            batch.DrawFont(resources.DefaultFont, new Vector2(250, 75), BitmapFontAlignment.Left, Color.White, string.Format("Mouse world position: {0}", input.Mouse.WorldPosition));
+            batch.DrawFont(resources.DefaultFont, new Vector2(25, 25), FontAlignment.Left, Color.White, this.strings.ToString());
+            batch.DrawFont(resources.DefaultFont, new Vector2(250, 25), FontAlignment.Left, Color.White, string.Format("Mouse wheel: {0}", input.Mouse.ScrollValue));
+            batch.DrawFont(resources.DefaultFont, new Vector2(250, 50), FontAlignment.Left, Color.White, string.Format("Mouse position: {0}", input.Mouse.Position));
+            batch.DrawFont(resources.DefaultFont, new Vector2(250, 75), FontAlignment.Left, Color.White, string.Format("Mouse world position: {0}", input.Mouse.WorldPosition));
             batch.End();
         }
 

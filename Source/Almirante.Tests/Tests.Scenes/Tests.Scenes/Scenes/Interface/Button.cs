@@ -65,7 +65,7 @@ namespace Tests.Scenes.Scenes.Interface
             batch.Draw(this.texture, new Rectangle((int)position.X, (int)position.Y, (int)this.Size.X, (int)this.Size.Y), this.color);
 
             var textPosition = position + ((this.Size / 2) - (textSize / 2));
-            batch.DrawFont(resources.DefaultFont, textPosition, BitmapFontAlignment.Left, Color.White, this.Text);
+            batch.DrawFont(resources.DefaultFont, textPosition, FontAlignment.Left, Color.White, this.Text);
         }
 
         /// <summary>

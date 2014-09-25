@@ -35,6 +35,20 @@ namespace Microsoft.Xna.Framework.Graphics
     public static partial class BatchExtensions
     {
         /// <summary>
+        /// Old scissor rectangle
+        /// </summary>
+        private static Rectangle _oldScissor;
+
+        private static bool _useCamera = false;
+        private static SpriteSortMode _sortMode = SpriteSortMode.Deferred;
+        private static BlendState _blendState = null;
+        private static SamplerState _samplerState = null;
+        private static DepthStencilState _depthStencilState = null;
+        private static RasterizerState _rasterizerState = null;
+        private static Effect _effect = null;
+        private static Matrix _matrix;
+
+        /// <summary>
         /// Starts the specified batch.
         /// </summary>
         /// <param name="batch">The batch.</param>
@@ -68,7 +82,30 @@ namespace Microsoft.Xna.Framework.Graphics
                 matrix = transform.Value * matrix;
             }
 
+            BatchExtensions._sortMode = sortMode;
+            BatchExtensions._blendState = blendState;
+            BatchExtensions._samplerState = samplerState;
+            BatchExtensions._depthStencilState = depthStencilState;
+            BatchExtensions._rasterizerState = rasterizerState;
+            BatchExtensions._effect = effect;
+            BatchExtensions._matrix = matrix;
+
             batch.Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, matrix);
+        }
+       
+        public static void EnableScissor(this SpriteBatch spriteBatch, Rectangle rect)
+        {
+            spriteBatch.End();
+            _oldScissor = spriteBatch.GraphicsDevice.ScissorRectangle;
+            spriteBatch.GraphicsDevice.ScissorRectangle = rect;
+            spriteBatch.Begin(_sortMode, _blendState, _samplerState, _depthStencilState, new RasterizerState() { ScissorTestEnable = true }, _effect, _matrix);
+        }
+
+        public static void DisableScissor(this SpriteBatch spriteBatch)
+        {
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.ScissorRectangle = _oldScissor;
+            spriteBatch.Begin(_sortMode, _blendState, _samplerState, _depthStencilState, _rasterizerState, _effect, _matrix);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Tests.Resources.Screens
 
             batch.Start();
             batch.Draw(this.black, new Rectangle(0, 0, settings.Resolution.BaseWidth, settings.Resolution.BaseHeight), Color.White);
-            batch.DrawFont(resources.DefaultFont, this.pos, BitmapFontAlignment.Left, Color.White, string.Format("Loading resources... {0}", resources.PendingResources));
+            batch.DrawFont(resources.DefaultFont, this.pos, FontAlignment.Left, Color.White, string.Format("Loading resources... {0}", resources.PendingResources));
             batch.End();
         }
     }

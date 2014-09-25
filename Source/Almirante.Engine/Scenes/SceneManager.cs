@@ -235,9 +235,13 @@ namespace Almirante.Engine.Scenes
                 {
                     this.nextScene = next;
 
-                    var scene = this.current.Peek();
-                    scene.SetTransitioning();
-                    scene.Deactivate();
+                    Scene scene = null;
+                    if (this.current.Count > 0)
+                    {
+                        scene = this.current.Peek();
+                        scene.SetTransitioning();
+                        scene.Deactivate();
+                    }
 
                     if (type != TransitionType.Pop)
                     {
@@ -256,8 +260,11 @@ namespace Almirante.Engine.Scenes
                         }
                     }
 
-                    scene.Enter();
-                    scene.SetTransitioning();
+                    if (scene != null)
+                    {
+                        scene.Enter();
+                        scene.SetTransitioning();
+                    }
 
                     this.transition = trans;
                     this.transition.Start();
@@ -298,11 +305,13 @@ namespace Almirante.Engine.Scenes
         {
             lock (this)
             {
-                this.current.Peek();
-                this.current.Peek().ClearTransitioning();
-                this.current.Peek().Deactivate();
-                this.current.Peek().Leave();
-                this.current.Pop();
+                if (this.current.Count > 0)
+                {
+                    this.current.Peek().ClearTransitioning();
+                    this.current.Peek().Deactivate();
+                    this.current.Peek().Leave();
+                    this.current.Pop();
+                }
 
                 if (this.nextScene != null)
                 {
@@ -337,9 +346,11 @@ namespace Almirante.Engine.Scenes
         {
             lock (this)
             {
-                this.current.Peek();
-                this.current.Peek().ClearTransitioning();
-                this.current.Peek().Deactivate();
+                if (this.current.Count > 0)
+                {
+                    this.current.Peek().ClearTransitioning();
+                    this.current.Peek().Deactivate();
+                }
 
                 if (this.nextScene != null)
                 {
@@ -480,6 +491,26 @@ namespace Almirante.Engine.Scenes
                 throw new InvalidOperationException("Cannot pop scenes - the stack is empty.");
             }
             this.SetupTransition(null, TransitionType.Pop, transition, time);
+        }
+
+        /// <summary>
+        /// Pops all scenes and pushs a new one.
+        /// </summary>
+        /// <param name="transition">The transition name.</param>
+        /// <param name="time">The time to occur the transition.</param>
+        public void PushClear<T>()
+            where T : Scene
+        {
+            this.current.Peek().Deactivate();
+            while (this.current.Count > 0)
+            {
+                this.current.Peek().ClearTransitioning();
+                this.current.Peek().Leave();
+                this.current.Pop();
+            }
+            this.Set(typeof(T));
+            this.current.Peek().Activate();
+            this.current.Peek().Enter();
         }
 
         /// <summary>

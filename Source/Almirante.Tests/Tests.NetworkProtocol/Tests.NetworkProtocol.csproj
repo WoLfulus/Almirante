@@ -41,9 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PacketChat.cs" />
+    <Compile Include="PlayerMessage.cs" />
+    <Compile Include="MessageRequest.cs" />
+    <Compile Include="JoinResponse.cs" />
+    <Compile Include="MessageResponse.cs" />
     <Compile Include="Packets.cs" />
-    <Compile Include="PacketJoin.cs" />
+    <Compile Include="JoinRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

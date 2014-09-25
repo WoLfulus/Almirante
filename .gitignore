@@ -57,3 +57,7 @@
 /Source/Almirante.Tests/Tests.NetworkProtocol/bin
 /Source/Almirante.Tests/Tests.NetworkServer/obj
 /Source/Almirante.Tests/Tests.NetworkServer/bin
+/Source/Almirante.Tests/Tests.NetworkClient/Tests.NetworkClient/obj
+/Source/Almirante.Tests/Tests.NetworkClient/Tests.NetworkClient/bin
+/Source/Almirante.Tests/Tests.NetworkClient/Tests.NetworkClientContent/bin
+/Source/Almirante.Tests/Tests.NetworkClient/Tests.NetworkClientContent/obj

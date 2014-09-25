@@ -37,7 +37,7 @@ namespace Tests.Entites.Entities.Components
         {
             var batch = AlmiranteEngine.Batch;
             var font = AlmiranteEngine.Resources.DefaultFont;
-            batch.DrawFont(font, new Vector2(this.position.X, this.position.Y), BitmapFontAlignment.Center, Color.DarkRed, "[" + this.Owner.Id + "] " + (int)this.position.X + ", " + (int)this.position.Y);
+            batch.DrawFont(font, new Vector2(this.position.X, this.position.Y), FontAlignment.Center, Color.DarkRed, "[" + this.Owner.Id + "] " + (int)this.position.X + ", " + (int)this.position.Y);
         }
     }
 }
