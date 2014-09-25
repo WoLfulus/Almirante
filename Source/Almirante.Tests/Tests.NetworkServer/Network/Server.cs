@@ -38,7 +38,7 @@ namespace Tests.NetworkServer.Network
                     continue;
                 }
 
-                if (packet.Name.ToLower() == conn.Name.ToLower() && conn.Id != client.Id)
+                if ((packet.Name.ToLower() == conn.Name.ToLower() && conn.Id != client.Id) || packet.Name.Trim().ToLower() == "system")
                 {
                     client.Send(new JoinResponse()
                     {
@@ -116,6 +116,31 @@ namespace Tests.NetworkServer.Network
         protected override void OnError(Exception ex)
         {
             Console.WriteLine("[SERVER ERROR] " + ex.Message);
+        }
+
+        /// <summary>
+        /// Connect
+        /// </summary>
+        /// <param name="connection"></param>
+        protected override void OnConnect(Player connection)
+        {
+            this.BroadcastMessage("SYSTEM", "Client connected.");
+        }
+
+        /// <summary>
+        /// Disconnect
+        /// </summary>
+        /// <param name="connection"></param>
+        protected override void OnDisconnect(Player connection)
+        {
+            if (connection.Name == null)
+            {
+                this.BroadcastMessage("SYSTEM", "Client disconnected.");
+            }
+            else
+            {
+                this.BroadcastMessage("SYSTEM", "'" + connection.Name + "' disconnected.");
+            }
         }
     }
 }

@@ -138,11 +138,13 @@ namespace Almirante.Network
                         int id = this.ids.Dequeue();
                         
                         var conn = new T();
-                        conn.Disconnected += OnDisconnect;
-                        conn.Data += OnMessage;
+                        conn.Disconnected += ConnectionDisconnected;
+                        conn.Data += ConnectionMessage;
                         conn.Initialize(id, socket);
 
                         this.connections[id] = conn;
+
+                        this.OnConnect(conn);
                     }
                 }
 
@@ -182,7 +184,22 @@ namespace Almirante.Network
         /// <param name="ex"></param>
         protected virtual void OnError(Exception ex)
         {
-            Debug.WriteLine("[Server Error] " + ex.Message);
+        }
+
+        /// <summary>
+        /// Connected callback
+        /// </summary>
+        /// <param name="connection"></param>
+        protected virtual void OnConnect(T connection)
+        {
+        }
+
+        /// <summary>
+        /// Disconnected callback
+        /// </summary>
+        /// <param name="connection"></param>
+        protected virtual void OnDisconnect(T connection)
+        {
         }
 
         /// <summary>
@@ -190,7 +207,7 @@ namespace Almirante.Network
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnMessage(object sender, DataEventArgs e)
+        private void ConnectionMessage(object sender, DataEventArgs e)
         {
             var conn = sender as T;
             if (conn != null)
@@ -207,14 +224,17 @@ namespace Almirante.Network
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnDisconnect(object sender, DisconnectedEventArgs e)
+        private void ConnectionDisconnected(object sender, DisconnectedEventArgs e)
         {
             var conn = sender as NetConnection;
             if (conn != null)
             {
                 lock (this)
                 {
-                    this.connections.Remove(conn.Id);
+                    if (this.connections.Remove(conn.Id))
+                    {
+                        this.OnDisconnect(conn as T);
+                    }
                 }
             }
         }
