@@ -119,22 +119,32 @@ namespace Almirante.Entities
 
             foreach (var assembly in assemblies)
             {
-                var types = assembly.GetExportedTypes();
-                foreach (var type in types)
+                try
                 {
-                    if (type.IsClass && type.IsAbstract)
+                    var types = assembly.GetExportedTypes();
+                    foreach (var type in types)
                     {
-                        continue;
-                    }
+                        if (type.IsClass && type.IsAbstract)
+                        {
+                            continue;
+                        }
 
-                    if (typeof(Component).IsAssignableFrom(type))
-                    {
-                        ComponentHelper.GetInfo(type);
+                        if (typeof(Component).IsAssignableFrom(type))
+                        {
+                            ComponentHelper.GetInfo(type);
+                        }
+                        else if (typeof(EntitySystem).IsAssignableFrom(type))
+                        {
+                            SystemHelper.GetInfo(type);
+                        }
                     }
-                    else if (typeof(EntitySystem).IsAssignableFrom(type))
-                    {
-                        SystemHelper.GetInfo(type);
-                    }
+                }
+                catch (NotSupportedException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
             }
 
