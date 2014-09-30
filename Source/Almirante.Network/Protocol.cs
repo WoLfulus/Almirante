@@ -13,9 +13,32 @@ namespace Almirante.Network
     public class NetClientProtocol
     {
         /// <summary>
+        /// Packets
+        /// </summary>
+        private class QueuedPacket
+        {
+            public int Id
+            {
+                get;
+                set;
+            }
+
+            public byte[] Buffer
+            {
+                get;
+                set;
+            }
+        }
+
+        /// <summary>
         /// Packet handlers.
         /// </summary>
         private Dictionary<int, List<Action<byte[]>>> handlers;
+
+        /// <summary>
+        /// Queued packets
+        /// </summary>
+        private Queue<QueuedPacket> queue;
 
         /// <summary>
         /// Constructor
@@ -23,6 +46,34 @@ namespace Almirante.Network
         public NetClientProtocol()
         {
             this.handlers = new Dictionary<int, List<Action<byte[]>>>();
+            this.queue = new Queue<QueuedPacket>();
+        }
+
+        /// <summary>
+        /// Process all messages
+        /// </summary>
+        public void Process()
+        {
+            lock (this)
+            {
+                while (this.queue.Count > 0)
+                {
+                    var q = this.queue.Dequeue();
+
+                    List<Action<byte[]>> handlers = null;
+                    if (this.handlers.TryGetValue(q.Id, out handlers))
+                    {
+                        foreach (var handler in handlers)
+                        {
+                            handler(q.Buffer);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Packet handlers not found for packet id #" + q.Id);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -38,7 +89,15 @@ namespace Almirante.Network
             List<Action<byte[]>> handlers = null;
             if (this.handlers.TryGetValue(info.Id, out handlers))
             {
-                
+                handlers.Add(new Action<byte[]>((data) =>
+                {
+                    P packet = info.Constructor() as P;
+                    if (packet != null)
+                    {
+                        packet.Read(data);
+                    }
+                    callback(packet);
+                }));
             }
             else
             {
@@ -61,17 +120,13 @@ namespace Almirante.Network
         /// </summary>
         internal void Handle(int id, byte[] payload)
         {
-            List<Action<byte[]>> handlers = null;
-            if (this.handlers.TryGetValue(id, out handlers))
+            lock (this)
             {
-                foreach (var handler in handlers)
+                this.queue.Enqueue(new QueuedPacket()
                 {
-                    handler(payload);
-                }
-            }
-            else
-            {
-                throw new Exception("Packet handlers not found for packet id #" + id);
+                    Id = id,
+                    Buffer = payload
+                });
             }
         }
     }
