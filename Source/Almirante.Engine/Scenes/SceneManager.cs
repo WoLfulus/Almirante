@@ -84,6 +84,26 @@ namespace Almirante.Engine.Scenes
         internal RenderTarget2D renderTargetNext;
 
         /// <summary>
+        /// 
+        /// </summary>
+        public event EventHandler BeforeUpdate;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public event EventHandler AfterUpdate;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public event EventHandler BeforeDraw;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public event EventHandler AfterDraw;
+
+        /// <summary>
         /// Creates a new instance of the <see cref="SceneManager"/> class.
         /// </summary>
         internal SceneManager()
@@ -588,6 +608,11 @@ namespace Almirante.Engine.Scenes
         {
             lock (this)
             {
+                if (this.BeforeUpdate != null)
+                {
+                    this.BeforeUpdate(this, new EventArgs());
+                }
+
                 var screens = this.current.ToArray();
                 for (int i = screens.Length - 1; i >= 0; i--)
                 {
@@ -608,6 +633,11 @@ namespace Almirante.Engine.Scenes
                 {
                     this.nextScene.Update();
                 }
+
+                if (this.AfterUpdate != null)
+                {
+                    this.AfterUpdate(this, new EventArgs());
+                }
             }
         }
 
@@ -618,6 +648,11 @@ namespace Almirante.Engine.Scenes
         {
             lock (this)
             {
+                if (this.BeforeDraw != null)
+                {
+                    this.BeforeDraw(this, new EventArgs());
+                }
+
                 if (this.transition != null)
                 {
                     AlmiranteEngine.Application.GraphicsDevice.SetRenderTarget(this.renderTarget);
@@ -662,6 +697,11 @@ namespace Almirante.Engine.Scenes
                         AlmiranteEngine.Application.GraphicsDevice.Clear(Color.Black);
                         this.transition.Draw(batch, this.renderTarget, this.renderTargetNext);
                     }
+                }
+
+                if (this.AfterDraw != null)
+                {
+                    this.AfterDraw(this, new EventArgs());
                 }
             }
         }

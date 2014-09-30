@@ -149,11 +149,17 @@ namespace Almirante.Network
         /// <param name="result"></param>
         private void SendCallback(IAsyncResult result)
         {
-            byte[] buffer = result.AsyncState as byte[];
-            int bytes = this.socket.EndSend(result);
-            if (bytes != buffer.Length)
+            try
             {
-                Debug.WriteLine("Send callback size differs from buffer length (" + bytes + " != " + buffer.Length + ")");
+                byte[] buffer = result.AsyncState as byte[];
+                int bytes = this.socket.EndSend(result);
+                if (bytes != buffer.Length)
+                {
+                    Debug.WriteLine("Send callback size differs from buffer length (" + bytes + " != " + buffer.Length + ")");
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
 
@@ -162,7 +168,13 @@ namespace Almirante.Network
         /// </summary>
         private void Receive()
         {
-            this.socket.BeginReceive(this.buffer, this.bufferOffset, this.buffer.Length - this.bufferOffset, SocketFlags.None, this.ReceiveCallback, null);
+            try
+            {
+                this.socket.BeginReceive(this.buffer, this.bufferOffset, this.buffer.Length - this.bufferOffset, SocketFlags.None, this.ReceiveCallback, null);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
