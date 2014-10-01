@@ -14,6 +14,31 @@ namespace Almirante.Network
     public class NetClient
     {
         /// <summary>
+        /// Data
+        /// </summary>
+        private class EventData
+        {
+            public enum EventDataType
+            {
+                Error,
+                Connect,
+                Disconnect
+            }
+
+            public EventDataType Type
+            {
+                get;
+                set;
+            }
+
+            public object Data
+            {
+                get;
+                set;
+            }
+        }
+
+        /// <summary>
         /// Socket.
         /// </summary>
         private Socket socket;
@@ -38,11 +63,47 @@ namespace Almirante.Network
         private int bufferOffset = 0;
 
         /// <summary>
+        /// Events
+        /// </summary>
+        private Queue<EventData> events;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public NetClient()
         {
             this.Protocol = new NetClientProtocol();
+            this.events = new Queue<EventData>();
+        }
+
+        /// <summary>
+        /// Updates the calls
+        /// </summary>
+        public void Update()
+        {
+            lock (this)
+            {
+                this.Protocol.Process();
+                while (this.events.Count > 0)
+                {
+                    var q = this.events.Dequeue();
+                    if (q != null)
+                    {
+                        switch (q.Type)
+                        {
+                            case EventData.EventDataType.Connect:
+                                this.OnConnect((bool)q.Data);
+                                break;
+                            case EventData.EventDataType.Disconnect:
+                                this.OnDisconnect();
+                                break;
+                            case EventData.EventDataType.Error:
+                                this.OnError((Exception) q.Data);
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -71,12 +132,12 @@ namespace Almirante.Network
             {
                 this.socket.EndConnect(result);
                 this.Receive();
-                this.OnConnect(true);
+                this.OnConnectCall(true);
             }
             catch (Exception ex)
             {
-                this.OnError(ex);
-                this.OnConnect(false);
+                this.OnErrorCall(ex);
+                this.OnConnectCall(false);
             }
         }
 
@@ -100,7 +161,7 @@ namespace Almirante.Network
                     }
                     finally
                     {
-                        this.OnDisconnect();
+                        this.OnDisconnectCall();
                     }
                 }
             }
@@ -113,31 +174,34 @@ namespace Almirante.Network
         public void Send<P>(P packet)
             where P : Packet
         {
-            if (this.socket == null || !this.socket.Connected)
+            lock (this)
             {
-                throw new Exception("You must connect NetClient first.");
-            }
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                using (BinaryWriter writer = new BinaryWriter(stream, Encoding.UTF8))
+                if (this.socket == null || !this.socket.Connected)
                 {
-                    byte[] buffer = packet.Write();
-                    writer.Write(buffer.Length + 8);
-                    writer.Write(packet.Id);
-                    writer.Write(buffer);
-                    writer.Flush();
-                    byte[] data = stream.ToArray();
-                    try
+                    throw new Exception("You must connect NetClient first.");
+                }
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    using (BinaryWriter writer = new BinaryWriter(stream, Encoding.UTF8))
                     {
-                        lock (this)
+                        byte[] buffer = packet.Write();
+                        writer.Write(buffer.Length + 8);
+                        writer.Write(packet.Id);
+                        writer.Write(buffer);
+                        writer.Flush();
+                        byte[] data = stream.ToArray();
+                        try
                         {
-                            this.socket.BeginSend(data, 0, data.Length, SocketFlags.None, this.SendCallback, data);
+                            lock (this)
+                            {
+                                this.socket.BeginSend(data, 0, data.Length, SocketFlags.None, this.SendCallback, data);
+                            }
                         }
-                    }
-                    catch (System.Exception)
-                    {
-                        this.Disconnect();
+                        catch (System.Exception)
+                        {
+                            this.Disconnect();
+                        }
                     }
                 }
             }
@@ -183,98 +247,147 @@ namespace Almirante.Network
         /// <param name="result"></param>
         private void ReceiveCallback(IAsyncResult result)
         {
-            try
+            lock (this)
             {
-                SocketError error = SocketError.Success;
-                int bytes = this.socket.EndReceive(result, out error);
-                if (error != SocketError.Success)
+                try
                 {
-                    if (error != SocketError.ConnectionReset)
+                    SocketError error = SocketError.Success;
+                    int bytes = this.socket.EndReceive(result, out error);
+                    if (error != SocketError.Success)
                     {
-                        this.OnError(new Exception("EndReceive failed with error " + error.ToString()));
-                    }
-                    this.Disconnect();
-                }
-                else
-                {
-                    if (bytes > 0)
-                    {
-                        this.bufferOffset += bytes;
-                        while (true)
+                        if (error != SocketError.ConnectionReset)
                         {
-                            if (this.bufferOffset < 8)
-                            {
-                                this.Receive();
-                                return;
-                            }
-
-                            using (MemoryStream stream = new MemoryStream(this.buffer, 0, this.bufferOffset, false))
-                            {
-                                using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8))
-                                {
-                                    int size = reader.ReadInt32();
-                                    int id = reader.ReadInt32();
-
-                                    if (size >= this.buffer.Length)
-                                    {
-                                        throw new Exception("Packet size is bigger than the receive buffer.");
-                                    }
-
-                                    if (size < this.bufferOffset)
-                                    {
-                                        this.Receive();
-                                        return;
-                                    }
-
-                                    byte[] buffer = reader.ReadBytes(size - 8);
-
-                                    try
-                                    {
-                                        this.Protocol.Handle(id, buffer);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        this.OnError(ex);
-                                    }
-
-                                    // Messages copy to front
-                                    for (int i = 0; i < this.bufferOffset - size; i++)
-                                    {
-                                        this.buffer[i] = this.buffer[size + i];
-                                    }
-
-                                    this.bufferOffset -= size;
-                                }
-                            }
+                            this.OnErrorCall(new Exception("EndReceive failed with error " + error.ToString()));
                         }
+                        this.Disconnect();
                     }
                     else
                     {
-                        this.Disconnect();
+                        if (bytes > 0)
+                        {
+                            this.bufferOffset += bytes;
+                            while (true)
+                            {
+                                if (this.bufferOffset < 8)
+                                {
+                                    this.Receive();
+                                    return;
+                                }
+
+                                using (MemoryStream stream = new MemoryStream(this.buffer, 0, this.bufferOffset, false))
+                                {
+                                    using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8))
+                                    {
+                                        int size = reader.ReadInt32();
+                                        int id = reader.ReadInt32();
+
+                                        if (size >= this.buffer.Length)
+                                        {
+                                            throw new Exception("Packet size is bigger than the receive buffer.");
+                                        }
+
+                                        if (size > this.bufferOffset)
+                                        {
+                                            this.Receive();
+                                            return;
+                                        }
+
+                                        byte[] buffer = reader.ReadBytes(size - 8);
+
+                                        try
+                                        {
+                                            this.Protocol.Handle(id, buffer);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            this.OnErrorCall(ex);
+                                        }
+
+                                        // Messages copy to front
+                                        for (int i = 0; i < this.bufferOffset - size; i++)
+                                        {
+                                            this.buffer[i] = this.buffer[size + i];
+                                        }
+
+                                        this.bufferOffset -= size;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.Disconnect();
+                        }
                     }
                 }
-            }
-            catch (NullReferenceException)
-            {
-            }
-            catch (Exception e)
-            {
-                this.OnError(e);
-                this.Disconnect();
+                catch (NullReferenceException)
+                {
+                }
+                catch (Exception e)
+                {
+                    this.OnErrorCall(e);
+                    this.Disconnect();
+                }
             }
         }
 
+        private void OnConnectCall(bool success)
+        {
+            lock (this)
+            {
+                this.events.Enqueue(new EventData()
+                {
+                    Type = EventData.EventDataType.Connect,
+                    Data = success
+                });
+            }
+        }
+
+        private void OnDisconnectCall()
+        {
+            lock (this)
+            {
+                this.events.Enqueue(new EventData()
+                {
+                    Type = EventData.EventDataType.Disconnect
+                });
+            }
+        }
+
+        private void OnErrorCall(Exception ex)
+        {
+            lock (this)
+            {
+                this.events.Enqueue(new EventData()
+                {
+                    Type = EventData.EventDataType.Error,
+                    Data = ex
+                });
+            }
+        }
+
+        /// <summary>
+        /// Virtual
+        /// </summary>
+        /// <param name="success"></param>
         protected virtual void OnConnect(bool success)
         {
         }
 
+        /// <summary>
+        /// Virtual
+        /// </summary>
+        /// <param name="success"></param>
         protected virtual void OnDisconnect()
         {
         }
 
+        /// <summary>
+        /// Virtual
+        /// </summary>
+        /// <param name="success"></param>
         protected virtual void OnError(Exception ex)
         {
-            Debug.WriteLine("[Client Error] " + ex.Message);
         }
     }
 }

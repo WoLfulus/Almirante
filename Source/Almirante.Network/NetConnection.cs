@@ -197,7 +197,7 @@ namespace Almirante.Network
                                         throw new Exception("Packet size is bigger than the receive buffer.");
                                     }
 
-                                    if (size < this.bufferOffset)
+                                    if (size > this.bufferOffset)
                                     {
                                         this.Receive();
                                         return;

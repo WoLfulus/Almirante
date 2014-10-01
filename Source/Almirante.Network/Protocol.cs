@@ -52,7 +52,7 @@ namespace Almirante.Network
         /// <summary>
         /// Process all messages
         /// </summary>
-        public void Process()
+        internal void Process()
         {
             lock (this)
             {

@@ -30,6 +30,7 @@ namespace Almirante.Engine.Scenes
     using Almirante.Engine.Interface;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using System;
 
     /// <summary>
     /// Screen class.
